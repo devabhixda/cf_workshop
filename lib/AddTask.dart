@@ -24,7 +24,7 @@ class _AddTaskState extends State<AddTask> {
                 size: 40,
               ),
               onPressed: () {
-                print("Pressed");
+                Navigator.pop(context);
               },
             ),
             Container(

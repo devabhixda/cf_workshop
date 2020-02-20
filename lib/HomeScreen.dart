@@ -14,60 +14,113 @@ class _HomeScreenState extends State<HomeScreen> {
     return MaterialApp(
         home: Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Center(
-              child: Container(
-                  margin: EdgeInsets.only(top: 50),
-                  height: (0.05) * h,
-                  child: Center(
-                      child: Text(
-                    "Tasks",
-                    style: TextStyle(color: Colors.black, fontSize: 30),
-                  )))),
-          Padding(
-            padding: EdgeInsets.all(40),
-            child: Text(
-              "Favourites",
-              style: TextStyle(fontSize: 25),
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Center(
+                child: Container(
+                    margin: EdgeInsets.only(top: 50),
+                    height: (0.05) * h,
+                    child: Center(
+                        child: Text(
+                      "Tasks",
+                      style: TextStyle(color: Colors.black, fontSize: 30),
+                    )))),
+            Padding(
+              padding: EdgeInsets.only(top: 40, left: 40),
+              child: Text(
+                "Favourites",
+                style: TextStyle(fontSize: 25),
+              ),
             ),
-          ),
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                height: (0.12) * h,
+            Container(
+                margin: EdgeInsets.only(top: 20),
+                height: (0.20) * h,
                 width: w,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
                     Container(
-                      height: (0.06) * h,
-                      width: (0.7) * w,
-                      child: Card(
-                        color: Color(0xFF01BD63),
-                        elevation: 4,
-                        child: Row(
+                      margin: EdgeInsets.only(left: 10),
+                      width: (0.5) * w,
+                      child: Card(elevation: 2, color: Colors.black, child: Column(children: <Widget>[
+                        Container(
+                          height: (0.13) * h,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: (0.3) * w),
+                          child: IconButton(icon: Icon(Icons.done_outline, size: 20,color: Colors.white,), onPressed: null),
+                        )
+                      ],),),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10),
+                      width: (0.5) * w,
+                      child: Card(elevation: 2, color: Colors.black),
+                    )
+                  ],
+                )),
+            Padding(
+              padding: EdgeInsets.only(top: 60, left: 40),
+              child: Text(
+                "Upcoming Tasks",
+                style: TextStyle(fontSize: 25),
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.only(top: 20),
+                height: (0.33) * h,
+                width: w,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(left: 10),
+                      width: (0.4) * w,
+                      child: Card(elevation: 2, color: Colors.black, child: Column(children: <Widget>[
+                        Container(
+                          height: (0.26) * h,
+                        ),
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            Container(
-                                margin: EdgeInsets.only(left: 10),
-                                child: Icon(
-                                  Icons.ev_station,
-                                  size: 50,
-                                  color: Colors.white,
-                                )),
-                            Container(
-                              margin: EdgeInsets.only(left: 5),
-                              child: Text(
-                                "Oil Changes at Regular intervals\nhave shown upto 10% savings on\nfuel consumption.",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 14),
-                              ),
+                            IconButton(
+                              icon: Icon(Icons.done_outline, color: Colors.white, size: 30,),
+                              onPressed: (){
+                                print("Pressed");
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete_outline, color: Colors.white, size: 30,),
+                              onPressed: (){
+                                print("Pressed");
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.star_border, color: Colors.white, size: 30,),
+                              onPressed: (){
+                                print("Pressed");
+                              },
                             )
                           ],
-                        )))
-        ],
-      )),
-      ]),
+                        )
+                        )
+                      ],),),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10),
+                      width: (0.4) * w,
+                      child: Card(elevation: 2, color: Colors.black),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10),
+                      width: (0.4) * w,
+                      child: Card(elevation: 2, color: Colors.black),
+                    ),
+                  ],
+                )),
+          ]),
       bottomNavigationBar: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -79,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(
                   margin: EdgeInsets.only(bottom: 20),
                   child: Card(
-                      color: Color(0xFF8BBEE8),
+                      color: Colors.black,
                       child: Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: 10, horizontal: 20),
@@ -106,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(
                   margin: EdgeInsets.only(bottom: 20),
                   child: Card(
-                      color: Color(0xFF8BBEE8),
+                      color: Colors.black,
                       child: Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: 10, horizontal: 20),
