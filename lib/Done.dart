@@ -2,19 +2,13 @@ import 'package:flutter/material.dart';
 
 class Done extends StatefulWidget{
   @override
-
-
   _DoneState createState() => _DoneState();
-
-
 }
 
 class _DoneState  extends State<Done>{
   @override
-
   Widget build(BuildContext context) {
     // TODO: implement build
-
     double wi = MediaQuery.of(context).size.width;
     double he = MediaQuery.of(context).size.height;
     return MaterialApp(
@@ -61,7 +55,6 @@ class _DoneState  extends State<Done>{
                         ]
                     )
                 )
-
             ),
             Container(
                 margin: EdgeInsets.only(top: (0.05) * he),
@@ -74,7 +67,6 @@ class _DoneState  extends State<Done>{
                           width: (0.01) * wi,
                         ),
                           Text("Title\n Description ", style: TextStyle(color:Colors.white,fontSize: 18),)
-
                         ]
                     )
                 )
@@ -92,18 +84,14 @@ class _DoneState  extends State<Done>{
                         ),
                           Text(
                             "Title\n Description ", style: TextStyle(color:Colors.white,fontSize: 18),)
-
                         ]
                     )
                 )
 
             ),
-
             ]
         )
       )
     );
   }
-
-
 }

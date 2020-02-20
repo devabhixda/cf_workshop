@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/AddTask.dart';
+import 'package:todo/Done.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -154,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
           InkWell(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AddTask()));
+                    MaterialPageRoute(builder: (context) => Done()));
               },
               child: Container(
                   margin: EdgeInsets.only(bottom: 20),
