@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo/AddTask.dart';
 import 'package:todo/Done.dart';
+import 'package:todo/models/note.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:todo/utils/database_helper.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -8,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  DatabaseHelper databaseHelper = DatabaseHelper();
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -128,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
           InkWell(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AddTask()));
+                    MaterialPageRoute(builder: (context) => AddTask(Note('', ''))));
               },
               child: Container(
                   margin: EdgeInsets.only(bottom: 20),
