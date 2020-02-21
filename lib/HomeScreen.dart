@@ -10,12 +10,14 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+double h, w;
+
 class _HomeScreenState extends State<HomeScreen> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   @override
   Widget build(BuildContext context) {
-    double h = MediaQuery.of(context).size.height;
-    double w = MediaQuery.of(context).size.width;
+    h = MediaQuery.of(context).size.height;
+    w = MediaQuery.of(context).size.width;
     return MaterialApp(
         home: Scaffold(
       body: Column(
