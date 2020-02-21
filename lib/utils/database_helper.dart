@@ -104,4 +104,12 @@ class DatabaseHelper {
 
 		return noteList;
 	}
+
+  	// Get number of Note objects in database
+	Future<int> getFavCount() async {
+		Database db = await this.database;
+		List<Map<String, dynamic>> x = await db.rawQuery('SELECT * from $noteTable WHERE $colFavourite=1');
+		int result = x.length;
+		return result;
+	}
 }

@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<Note> noteList;
   int count = 0;
+  int favcount = 0;
   bool sync = false;
   @override
   Widget build(BuildContext context) {
@@ -205,11 +206,15 @@ class _HomeScreenState extends State<HomeScreen> {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
       Future<List<Note>> noteListFuture = databaseHelper.getNoteList();
+      Future<int> cnt = databaseHelper.getFavCount();
       noteListFuture.then((noteList) {
         setState(() {
           this.noteList = noteList;
           this.count = noteList.length;
         });
+      });
+      cnt.then((noteList){
+        this.favcount = noteList;
       });
     });
   }
@@ -223,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _setFavourite(BuildContext context, Note note) async {
-    note.favourite=1;
+    note.favourite = 1;
     int result = await databaseHelper.updateNote(note);
     if (result != 0) {
       _showSnackBar(context, 'Task Marked Favourite');
