@@ -131,7 +131,7 @@ class _AddTaskState extends State<AddTask> {
     moveToLastScreen();
 
     note.date = DateFormat.yMMMd().format(DateTime.now());
-
+    note.favourite = 0;
     print(note);
     int result;
     if (note.id != null) {

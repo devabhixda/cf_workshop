@@ -55,41 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: EdgeInsets.only(top: 20),
                 height: (0.20) * h,
                 width: w,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 10),
-                      width: (0.5) * w,
-                      child: Card(
-                        elevation: 2,
-                        color: Colors.black,
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              height: (0.13) * h,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: (0.3) * w),
-                              child: IconButton(
-                                  icon: Icon(
-                                    Icons.done_outline,
-                                    size: 20,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: null),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 10),
-                      width: (0.5) * w,
-                      child: Card(elevation: 2, color: Colors.black),
-                    )
-                  ],
-                )),
+                child: getFavouritesListView()),
             Padding(
               padding: EdgeInsets.only(top: 60, left: 40),
               child: Text(
@@ -110,8 +76,10 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.white,
         ),
         onPressed: () async {
-          sync = await Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddTask(Note('', ''))));
+          sync = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddTask(Note('', '', 0))));
         },
       ),
     ));
@@ -182,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           size: 30,
                         ),
                         onPressed: () {
-                          print("Pressed");
+                          _setFavourite(context, noteList[position]);
                         },
                       )
                     ],
@@ -191,6 +159,45 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           );
+        });
+  }
+
+  ListView getFavouritesListView() {
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: count,
+        itemBuilder: (BuildContext context, int position) {
+          return this.noteList[position].favourite == 1 ? Container(
+            margin: EdgeInsets.only(left: 10),
+            width: (0.5) * w,
+            child: Card(
+              elevation: 2,
+              color: Colors.black,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: (0.13) * h,
+                    child: Text(
+                      this.noteList[position].title,
+                      style: TextStyle(
+                        color: Colors.white
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: (0.3) * w),
+                    child: IconButton(
+                        icon: Icon(
+                          Icons.done_outline,
+                          size: 20,
+                          color: Colors.white,
+                        ),
+                        onPressed: null),
+                  )
+                ],
+              ),
+            ),
+          ) : Container();
         });
   }
 
@@ -215,10 +222,20 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void _setFavourite(BuildContext context, Note note) async {
+    note.favourite=1;
+    int result = await databaseHelper.updateNote(note);
+    if (result != 0) {
+      _showSnackBar(context, 'Task Marked Favourite');
+      updateListView();
+    }
+  }
+
   void _showSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(
       content: Text(message),
-      backgroundColor: Colors.black,);
+      backgroundColor: Colors.black,
+    );
     Scaffold.of(context).showSnackBar(snackBar);
   }
 }
