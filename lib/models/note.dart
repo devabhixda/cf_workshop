@@ -4,11 +4,11 @@ class Note {
 	String _title;
 	String _description;
 	String _date;
-	int _priority;
+	//int _priority;
 
-	Note(this._title, this._date, this._priority, [this._description]);
+	Note(this._title, this._date, [this._description]);
 
-	Note.withId(this._id, this._title, this._date, this._priority, [this._description]);
+	Note.withId(this._id, this._title, this._date, [this._description]);
 
 	int get id => _id;
 
@@ -16,7 +16,7 @@ class Note {
 
 	String get description => _description;
 
-	int get priority => _priority;
+	//int get priority => _priority;
 
 	String get date => _date;
 
@@ -32,11 +32,11 @@ class Note {
 		}
 	}
 
-	set priority(int newPriority) {
-		if (newPriority >= 1 && newPriority <= 2) {
-			this._priority = newPriority;
-		}
-	}
+	// set priority(int newPriority) {
+	// 	if (newPriority >= 1 && newPriority <= 2) {
+	// 		this._priority = newPriority;
+	// 	}
+	// }
 
 	set date(String newDate) {
 		this._date = newDate;
@@ -51,7 +51,7 @@ class Note {
 		}
 		map['title'] = _title;
 		map['description'] = _description;
-		map['priority'] = _priority;
+		//map['priority'] = _priority;
 		map['date'] = _date;
 
 		return map;
@@ -62,7 +62,7 @@ class Note {
 		this._id = map['id'];
 		this._title = map['title'];
 		this._description = map['description'];
-		this._priority = map['priority'];
+		//this._priority = map['priority'];
 		this._date = map['date'];
 	}
 }
