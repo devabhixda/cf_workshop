@@ -7,17 +7,28 @@ import 'package:todo/utils/database_helper.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<StatefulWidget> createState() {
+    return _HomeScreenState();
+  }
 }
 
 double h, w;
 
 class _HomeScreenState extends State<HomeScreen> {
   DatabaseHelper databaseHelper = DatabaseHelper();
+  List<Note> noteList;
+  int count = 0;
+  bool sync = false;
   @override
   Widget build(BuildContext context) {
     h = MediaQuery.of(context).size.height;
     w = MediaQuery.of(context).size.width;
+    print(noteList);
+    if (noteList == null || sync) {
+      sync = false;
+      noteList = List<Note>();
+      updateListView();
+    }
     return MaterialApp(
         home: Scaffold(
       body: Column(
@@ -50,15 +61,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       margin: EdgeInsets.only(left: 10),
                       width: (0.5) * w,
-                      child: Card(elevation: 2, color: Colors.black, child: Column(children: <Widget>[
-                        Container(
-                          height: (0.13) * h,
+                      child: Card(
+                        elevation: 2,
+                        color: Colors.black,
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              height: (0.13) * h,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: (0.3) * w),
+                              child: IconButton(
+                                  icon: Icon(
+                                    Icons.done_outline,
+                                    size: 20,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: null),
+                            )
+                          ],
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: (0.3) * w),
-                          child: IconButton(icon: Icon(Icons.done_outline, size: 20,color: Colors.white,), onPressed: null),
-                        )
-                      ],),),
+                      ),
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 10),
@@ -78,115 +101,124 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: EdgeInsets.only(top: 20),
                 height: (0.33) * h,
                 width: w,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 10),
-                      width: (0.4) * w,
-                      child: Card(elevation: 2, color: Colors.black, child: Column(children: <Widget>[
-                        Container(
-                          height: (0.26) * h,
-                        ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.done_outline, color: Colors.white, size: 30,),
-                              onPressed: (){
-                                print("Pressed");
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.delete_outline, color: Colors.white, size: 30,),
-                              onPressed: (){
-                                print("Pressed");
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.star_border, color: Colors.white, size: 30,),
-                              onPressed: (){
-                                print("Pressed");
-                              },
-                            )
-                          ],
-                        )
-                        )
-                      ],),),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 10),
-                      width: (0.4) * w,
-                      child: Card(elevation: 2, color: Colors.black),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 10),
-                      width: (0.4) * w,
-                      child: Card(elevation: 2, color: Colors.black),
-                    ),
-                  ],
-                )),
+                child: getNoteListView()),
           ]),
-      bottomNavigationBar: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          InkWell(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AddTask(Note('', ''))));
-              },
-              child: Container(
-                  margin: EdgeInsets.only(bottom: 20),
-                  child: Card(
-                      color: Colors.black,
-                      child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.add,
-                                size: 30,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text("Add task",
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white))
-                            ],
-                          ))))),
-          InkWell(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Done()));
-              },
-              child: Container(
-                  margin: EdgeInsets.only(bottom: 20),
-                  child: Card(
-                      color: Colors.black,
-                      child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.history,
-                                size: 30,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text("Completed",
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white))
-                            ],
-                          ))))),
-        ],
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        onPressed: () async {
+          sync = await Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AddTask(Note('', ''))));
+        },
       ),
     ));
+  }
+
+  ListView getNoteListView() {
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: count,
+        itemBuilder: (BuildContext context, int position) {
+          return Container(
+            margin: EdgeInsets.only(left: 10),
+            width: (0.4) * w,
+            child: Card(
+              elevation: 2,
+              color: Colors.black,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: (0.26) * h,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Text(
+                            this.noteList[position].title,
+                            style: TextStyle(color: Colors.white, fontSize: 25),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Text(
+                            this.noteList[position].description,
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(
+                          Icons.done_outline,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          print("Pressed");
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete_outline,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          _delete(context, noteList[position]);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.star_border,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          print("Pressed");
+                        },
+                      )
+                    ],
+                  ))
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  void updateListView() {
+    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Note>> noteListFuture = databaseHelper.getNoteList();
+      noteListFuture.then((noteList) {
+        setState(() {
+          this.noteList = noteList;
+          this.count = noteList.length;
+        });
+      });
+    });
+  }
+
+  void _delete(BuildContext context, Note note) async {
+    int result = await databaseHelper.deleteNote(note.id);
+    if (result != 0) {
+      _showSnackBar(context, 'Task Deleted Successfully');
+      updateListView();
+    }
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.black,);
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 }
