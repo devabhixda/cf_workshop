@@ -36,15 +36,14 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Center(
-                child: Container(
-                    margin: EdgeInsets.only(top: 50),
-                    height: (0.05) * h,
-                    child: Center(
-                        child: Text(
-                      "Tasks",
-                      style: TextStyle(color: Colors.black, fontSize: 30),
-                    )))),
+            Padding(
+              padding: EdgeInsets.only(top: (0.05) * h),
+              child: Center(
+                child: Text(
+              "Tasks",
+              style: TextStyle(color: Colors.black, fontSize: 30),
+            )),
+            ),
             Padding(
               padding: EdgeInsets.only(top: 40, left: 40),
               child: Text(
@@ -56,7 +55,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: EdgeInsets.only(top: 20),
                 height: (0.20) * h,
                 width: w,
-                child: getFavouritesListView()),
+                child: favcount != 0
+                    ? getFavouritesListView()
+                    : Padding(
+                        padding: EdgeInsets.all(40),
+                        child: Text(
+                          "No Favourites",
+                          style: TextStyle(fontSize: 20),
+                        ))),
             Padding(
               padding: EdgeInsets.only(top: 60, left: 40),
               child: Text(
@@ -68,7 +74,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: EdgeInsets.only(top: 20),
                 height: (0.33) * h,
                 width: w,
-                child: getNoteListView()),
+                child: count != 0
+                    ? getNoteListView()
+                    : Padding(
+                        padding: EdgeInsets.all(40),
+                        child: Text(
+                          "All caught up!",
+                          style: TextStyle(fontSize: 20),
+                        ))),
           ]),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
@@ -80,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
           sync = await Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AddTask(Note('', '', 0))));
+                  builder: (context) => AddTask(Note('', '', 0, 0))));
         },
       ),
     ));
@@ -96,7 +109,9 @@ class _HomeScreenState extends State<HomeScreen> {
             width: (0.4) * w,
             child: Card(
               elevation: 2,
-              color: Colors.black,
+              color: this.noteList[position].completed == 0
+                  ? Colors.black
+                  : Colors.grey,
               child: Column(
                 children: <Widget>[
                   Container(
@@ -121,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Container(
+                    alignment: Alignment.bottomCenter,
                       child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -131,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           size: 30,
                         ),
                         onPressed: () {
-                          print("Pressed");
+                          _setCompleted(context, noteList[position]);
                         },
                       ),
                       IconButton(
@@ -168,37 +184,41 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.horizontal,
         itemCount: count,
         itemBuilder: (BuildContext context, int position) {
-          return this.noteList[position].favourite == 1 ? Container(
-            margin: EdgeInsets.only(left: 10),
-            width: (0.5) * w,
-            child: Card(
-              elevation: 2,
-              color: Colors.black,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    height: (0.13) * h,
-                    child: Text(
-                      this.noteList[position].title,
-                      style: TextStyle(
-                        color: Colors.white
-                      ),
+          return this.noteList[position].favourite == 1
+              ? Container(
+                  margin: EdgeInsets.only(left: 10),
+                  width: (0.5) * w,
+                  child: Card(
+                    elevation: 2,
+                    color: Colors.black,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          height: (0.13) * h,
+                          child: Center(
+                          child: Text(
+                            this.noteList[position].title,
+                            style: TextStyle(color: Colors.white, fontSize: 30),
+                          ),
+                        ),
+                        ),
+                        Container(
+                          alignment: Alignment.bottomRight,
+                          child: IconButton(
+                              icon: Icon(
+                                Icons.done_outline,
+                                size: 20,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                _setCompleted(context, noteList[position]);
+                              }),
+                        )
+                      ],
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(left: (0.3) * w),
-                    child: IconButton(
-                        icon: Icon(
-                          Icons.done_outline,
-                          size: 20,
-                          color: Colors.white,
-                        ),
-                        onPressed: null),
-                  )
-                ],
-              ),
-            ),
-          ) : Container();
+                )
+              : Container();
         });
   }
 
