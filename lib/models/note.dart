@@ -5,11 +5,12 @@ class Note {
 	String _description;
 	String _date;
   int _favourite;
+  int _completed;
 	//int _priority;
 
-	Note(this._title, this._date, this._favourite, [this._description]);
+	Note(this._title, this._date, this._favourite, this._completed, [this._description]);
 
-	Note.withId(this._id, this._title, this._date, this._favourite, [this._description]);
+	Note.withId(this._id, this._title, this._date, this._favourite, this._completed, [this._description]);
 
 	int get id => _id;
 
@@ -18,6 +19,8 @@ class Note {
 	String get description => _description;
 
   int get favourite => _favourite;
+
+  int get completed => _completed;
 
 	//int get priority => _priority;
 
@@ -48,6 +51,10 @@ class Note {
   set favourite(int fav){
     this._favourite = fav;
   }
+
+  set completed(int cmp){
+    this._completed = cmp;
+  }
 	// Convert a Note object into a Map object
 	Map<String, dynamic> toMap() {
 
@@ -60,6 +67,7 @@ class Note {
 		//map['priority'] = _priority;
 		map['date'] = _date;
     map['favourite'] = _favourite;
+    map['completed'] = _completed;
 		return map;
 	}
 
@@ -71,5 +79,6 @@ class Note {
 		//this._priority = map['priority'];
 		this._date = map['date'];
     this._favourite = map['favourite'];
+    this._completed = map['completed'];
 	}
 }

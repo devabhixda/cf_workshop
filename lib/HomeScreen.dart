@@ -231,6 +231,16 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void _setCompleted(BuildContext context, Note note) async {
+    note.completed = 1;
+    note.favourite = 0;
+    int result = await databaseHelper.updateNote(note);
+    if (result != 0) {
+      _showSnackBar(context, 'Task Marked Complete');
+      updateListView();
+    }
+  }
+
   void _showSnackBar(BuildContext context, String message) {
     final snackBar = SnackBar(
       content: Text(message),

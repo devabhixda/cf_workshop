@@ -132,6 +132,7 @@ class _AddTaskState extends State<AddTask> {
 
     note.date = DateFormat.yMMMd().format(DateTime.now());
     note.favourite = 0;
+    note.completed = 0;
     print(note);
     int result;
     if (note.id != null) {
